@@ -31,7 +31,6 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential ninja-build gcc g++ libboost-all-dev qt6-base-dev qt6-svg-dev libsqlite3-dev default-jdk maven
-        sudo apt-get install -y ninja
 
     - name: Initialize Submodules Recursively
       run: git submodule update --init --recursive --jobs 4 --depth 1
