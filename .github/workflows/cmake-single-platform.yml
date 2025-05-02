@@ -30,19 +30,36 @@ jobs:
     - name: Install System Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libboost-all-dev qt6-base-dev qt6-svg-dev libsqlite3-dev ninja-build default-jdk maven
+        sudo apt-get install -y build-essential ninja-build gcc g++ libboost-all-dev qt6-base-dev qt6-svg-dev libsqlite3-dev default-jdk maven
+        sudo apt-get install -y ninja
+
+    - name: Initialize Submodules Recursively
+      run: git submodule update --init --recursive --jobs 4 --depth 1
+
+    - name: Bootstrap Vcpkg with Ninja
+      run: |
+        cd vcpkg
+        ./bootstrap-vcpkg.sh -usage=release -disableMetrics
+        ls -l scripts/buildsystems/vcpkg.cmake
+        cd ..
 
     - name: Configure CMake with Vcpkg Preset
-      run: cmake --preset vcpkg-ninja-release -B build
+      run: |
+        cmake --preset vcpkg-ninja-release -B build \
+          -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/vcpkg/scripts/buildsystems/vcpkg.cmake \
+          -DCMAKE_GENERATOR=Ninja \
+          -DCMAKE_MAKE_PROGRAM=$(which ninja)
       working-directory: ${{github.workspace}}
 
 
     - name: Build with CMake Preset
-      run: cmake --build build --preset vcpkg-ninja-release -v
+      run: |
+        cmake --build build --preset vcpkg-ninja-release -v
+        ls build  # 添加构建目录验证
       working-directory: ${{github.workspace}}
 
     - name: Run Tests
       run: |
         cd build
-        ctest --preset vcpkg-ninja-release
+        ctest --preset vcpkg-ninja-release -V
       working-directory: ${{github.workspace}}
