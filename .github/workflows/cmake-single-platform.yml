@@ -35,6 +35,12 @@ jobs:
     - name: Initialize Submodules Recursively
       run: git submodule update --init --recursive --jobs 4 --depth 1
 
+    - name: Cache Vcpkg
+      uses: actions/cache@v3
+      with:
+        path: vcpkg
+        key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg/**/portfile.cmake') }}
+
     - name: Bootstrap Vcpkg with Ninja
       run: |
         cd vcpkg
@@ -50,6 +56,12 @@ jobs:
           -DCMAKE_MAKE_PROGRAM=$(which ninja)
       working-directory: ${{github.workspace}}
 
+
+    - name: Cache build directory
+      uses: actions/cache@v3
+      with:
+        path: build
+        key: ${{ runner.os }}-build-${{ hashFiles('**/CMakeLists.txt') }}
 
     - name: Build with CMake Preset
       run: |
