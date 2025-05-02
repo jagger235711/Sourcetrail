@@ -22,6 +22,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Free Disk Space (Ubuntu)
+      uses: jlumbroso/free-disk-space@v1.3.1
+
     - name: Install Qt6 Dependencies
       run: |
         chmod +x ./script/install-qt6-dependencies.sh
