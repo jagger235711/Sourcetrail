@@ -38,7 +38,7 @@ jobs:
     - name: Bootstrap Vcpkg with Ninja
       run: |
         cd vcpkg
-        ./bootstrap-vcpkg.sh -usage=release -disableMetrics
+        ./bootstrap-vcpkg.sh --release -disableMetrics
         ls -l scripts/buildsystems/vcpkg.cmake
         cd ..
 
