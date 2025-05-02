@@ -6,7 +6,7 @@
 class CxxQualifierFlags
 {
 public:
-	enum QualifierType
+	enum QualifierType : char
 	{
 		QUALIFIER_NONE = 0,
 		QUALIFIER_CONST = 1

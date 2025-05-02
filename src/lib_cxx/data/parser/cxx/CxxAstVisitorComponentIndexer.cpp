@@ -450,7 +450,7 @@ void CxxAstVisitorComponentIndexer::visitFunctionDecl(clang::FunctionDecl* d)
 				}
 			}
 		}
-		findNonTrivialDestructorCalls(d);
+		// findNonTrivialDestructorCalls(d);
 	}
 }
 

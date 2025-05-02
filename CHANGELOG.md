@@ -1,5 +1,12 @@
 ### Changelog
 
+#### 2025.5.1
+* GUI: Fix handling of Esc/Return keys for dialogs (Indexing, Bookmark, etc.) (Fixes [issue 27](https://github.com/petermost/Sourcetrail/issues/27))
+* GUI: Activate bookmark with double click and close bookmark manager
+* GUI: Highlight the taskbar entry when indexing has finished
+* GUI: Show indexing progress in window title
+* GUI: Added tooltips or prompt texts to many widgets
+
 #### 2025.4.1
 * Java: Add Support for record classes
 * macOS: Fix vcpkg build. Thanks to [ChristianWieden](https://github.com/ChristianWieden) for the help
