@@ -22,18 +22,27 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Configure CMake
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+    - name: Install Qt6 Dependencies
+      run: |
+        chmod +x ./script/install-qt6-dependencies.sh
+        ./script/install-qt6-dependencies.sh
 
-    - name: Build
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+    - name: Install System Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libboost-all-dev qt6-base-dev qt6-svg-dev libsqlite3-dev ninja-build default-jdk maven
 
-    - name: Test
-      working-directory: ${{github.workspace}}/build
-      # Execute tests defined by the CMake configuration.
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}}
+    - name: Configure CMake with Vcpkg Preset
+      run: cmake --preset vcpkg-ninja-release -B build
+      working-directory: ${{github.workspace}}
 
+
+    - name: Build with CMake Preset
+      run: cmake --build build --preset vcpkg-ninja-release -v
+      working-directory: ${{github.workspace}}
+
+    - name: Run Tests
+      run: |
+        cd build
+        ctest --preset vcpkg-ninja-release
+      working-directory: ${{github.workspace}}
