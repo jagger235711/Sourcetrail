@@ -488,8 +488,8 @@ void CxxAstVisitorComponentIndexer::findNonTrivialDestructorCalls(const Function
 				for (auto ref : block->refs())
 				{
 					// It should not be necessary to special-case 'CFGBaseDtor'. But 'CFGImplicitDtor::getDestructorDecl' 
-					// is simply missing the implementation of that case. See 
-					// https://github.com/llvm/llvm-project/blob/c949500d519085a4e5b93928b14ca766a353ad73/clang/lib/Analysis/CFG.cpp#L5354
+					// is simply missing the implementation of that case. See 'CFGImplicitDtor::getDestructorDecl()':
+					// https://github.com/llvm/llvm-project/blob/cf2f13a867fb86b5c7ce33df8a569477dce71f4f/clang/lib/Analysis/CFG.cpp#L5406
 					if (optional<CFGBaseDtor> baseDtor = ref->getAs<CFGBaseDtor>())
 					{
 						const CXXBaseSpecifier *baseSpec = baseDtor->getBaseSpecifier();
